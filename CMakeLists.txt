@@ -7,26 +7,30 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Compiler flags
+include(cmake/compilerFlags.cmake)
+
+# Dependencies
+#find_package(fmt CONFIG REQUIRED)
+
+# Root directory for source files
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
+
 # Executable
-add_executable(CppBase src/main.cpp)
+# Note: Uses "CONFIGURE_DEPENDS" to automatically re-run CMake when new source files are added
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/**/*.cpp src/*.cpp)
+add_executable(CppBase ${SOURCES})
 
-# Include Directories
-target_include_directories(CppBase PRIVATE include)
+# Included headers
+#target_include_directories(worker PRIVATE include)
 
-# Flags
-if(MSVC)
-    target_compile_options(CppBase PRIVATE /W4 /WX)
-else()
-    target_compile_options(CppBase PRIVATE
-        -Wall
-        -Wextra
-        -Wpedantic
-        -Wshadow
-        -Wnon-virtual-dtor
-        -Wcast-align
-        -Wunused
-        -Woverloaded-virtual
-        -Wnull-dereference
-        -Wformat=2
-    )
-endif()
+# Apply the compiler flags
+apply_compiler_flags(CppBase)
+
+# Dependencies (defined in deps CMake files)
+target_link_libraries(CppBase PRIVATE
+    #fmt::fmt
+)
+
+# Install into bin directory
+install(TARGETS CppBase DESTINATION bin)

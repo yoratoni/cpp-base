@@ -40,8 +40,8 @@
 # debug information files
 *.dwo
 
-# CMake build directory
-build/
+# Build
+/build/
 
 # clangd index
 .cache/

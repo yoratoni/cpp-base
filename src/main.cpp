@@ -1,8 +1,14 @@
+#include "core/greeting.hpp"
+
+#include <cstdlib>
 #include <iostream>
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    std::cout << core::greet("World") << '\n';
 
-    system("pause");
-    return 0;
+#ifdef _WIN32
+    std::system("pause");
+#endif
+
+    return EXIT_SUCCESS;
 }

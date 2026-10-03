@@ -2,7 +2,21 @@
     "version": "0.2.0",
     "configurations": [
         {
+            // Clang targets the MSVC ABI on Windows ("x86_64-pc-windows-msvc") and emits
+            // CodeView/PDB debug info, which only the Visual Studio debugger reads properly
             "name": "CMake: Debug",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${command:cmake.launchTargetPath}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "externalTerminal"
+        },
+        {
+            // For GCC/MinGW or Linux builds (DWARF debug info)
+            "name": "CMake: Debug (gdb)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${command:cmake.launchTargetPath}",
@@ -12,12 +26,12 @@
             "environment": [
                 {
                     "name": "PATH",
-                    "value": "${env:PATH};C:\\msys64\\ucrt64\\bin"
+                    "value": "C:\msys64\ucrt64\bin;${env:PATH}"
                 }
             ],
             "externalConsole": true,
             "MIMode": "gdb",
-            "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
+            "miDebuggerPath": "C:\msys64\ucrt64\bin\gdb.exe",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
